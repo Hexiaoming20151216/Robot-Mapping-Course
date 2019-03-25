@@ -17,12 +17,18 @@ numParticles = length(particles);
 for i = 1:numParticles
 
   % append the old position to the history of the particle
+  % 记录每个粒子过去的状态，即机器人位姿轨迹估计
+  % {end}表示最后一个元素
   particles(i).history{end+1} = particles(i).pose;
 
   % sample a new pose for the particle
+  % need load package: pkg load  statistics package
+  % 对u加噪声
   r1 = normrnd(u.r1, r1Noise);
   r2 = normrnd(u.r2, r2Noise);
+  % 对平移t加噪声
   trans = normrnd(u.t, transNoise);
+  % 预测下一时刻粒子状态
   particles(i).pose(1) = particles(i).pose(1) + trans*cos(particles(i).pose(3) + r1);
   particles(i).pose(2) = particles(i).pose(2) + trans*sin(particles(i).pose(3) + r1);
   particles(i).pose(3) = normalize_angle(particles(i).pose(3) + r1 + r2);

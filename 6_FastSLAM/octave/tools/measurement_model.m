@@ -8,6 +8,7 @@ landmarkId = z.id;
 landmarkPos = particle.landmarks(landmarkId).mu;
 
 % TODO: use the current state of the particle to predict the measurment
+% 使用当前粒子状态预测观测值
 landmarkX = landmarkPos(1);
 landmarkY = landmarkPos(2);
 expectedRange = sqrt((landmarkX - particle.pose(1))^2 + (landmarkY - particle.pose(2))^2);

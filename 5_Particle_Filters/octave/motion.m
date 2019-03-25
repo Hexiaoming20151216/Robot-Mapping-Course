@@ -23,8 +23,10 @@ for i = 1:numParticles
   particles(i).history = cell();
 end
 
+%%  pkg load statistics
+
 % Perform filter update for each odometry-observation read from the
-% data file.
+% data file
 for t = 1:size(data.timestep, 2)
 %for t = 1:50
     printf('timestep = %d\n', t);

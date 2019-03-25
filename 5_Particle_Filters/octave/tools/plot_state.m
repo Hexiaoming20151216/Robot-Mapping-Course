@@ -16,13 +16,13 @@ function plot_state(particles, timestep)
     hold off
 
     % dump to a file or show the window
-    %window = true;
-    window = false;
+    window = true;
+    % window = false;
     if window
       figure(1, "visible", "on");
       drawnow;
-      filename = sprintf('../plots/pf_%03d.png', timestep);
-      print(filename, '-dpng');
+      %filename = sprintf('../plots/pf_%03d.png', timestep);
+      %print(filename, '-dpng');
       pause(0.5);
     else
       figure(1, "visible", "off");
