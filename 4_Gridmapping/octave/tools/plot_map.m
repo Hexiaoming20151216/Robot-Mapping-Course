@@ -1,7 +1,7 @@
 function plot_map(map, mapBox, robPoseMapFrame, poses, laserEndPntsMapFrame, gridSize, offset, t)
 	
 	close all
-%	figure 
+	% figure(1) 
 	graphics_toolkit gnuplot	
 	% f = figure( "visible", "off");
   f = figure( "visible", "on");
@@ -17,8 +17,8 @@ function plot_map(map, mapBox, robPoseMapFrame, poses, laserEndPntsMapFrame, gri
 	plot(traj(1,:),traj(2,:),'g')
 	plot(robPoseMapFrame(1),robPoseMapFrame(2),'bo','markersize',5,'linewidth',4)
 	plot(laserEndPntsMapFrame(1,:),laserEndPntsMapFrame(2,:),'ro','markersize',2)
-    	filename = sprintf('../plots/gridmap_%03d.png', t);
+  % filename = sprintf('../plots/gridmap_%03d.png', t);
 	% print(f, filename, '-dpng');
-	close all;
+	% close all;
 
 end

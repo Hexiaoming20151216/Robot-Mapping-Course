@@ -22,12 +22,14 @@ size(map);
 mapUpdate = zeros(size(map));
 
 % Robot pose as a homogeneous transformation matrix.
+% 将机器人位姿转换为齐次变换矩阵
 robTrans = v2t(robPose);
 
 % TODO: compute robPoseMapFrame. Use your world_to_map_coordinates implementation.
 %%%%%%%%%%%%%%%
 %robPose
 %%%%%%%%%%%%%%%
+% robPose为列向量 [x;y]，将机器人位姿映射成栅格地图坐标
 robPoseMapFrame(1:2) = world_to_map_coordinates(robPose(1:2),gridSize,offset);
 robPoseMapFrame(3) = robPose(3);
 %%%%%%%%%%%%%%%
@@ -35,12 +37,15 @@ robPoseMapFrame(3) = robPose(3);
 %%%%%%%%%%%%%%%
 % Compute the Cartesian coordinates of the laser beam endpoints.
 % Set the third argument to 'true' to use only half the beams for speeding up the algorithm when debugging.
+% 根据激光数据计算出在机器人坐标系下的齐次坐标
 laserEndPnts = robotlaser_as_cartesian(scan, 30, false);
 
 % Compute the endpoints of the laser beams in the world coordinates frame.
+% 转换到世界坐标系下的齐次坐标
 laserEndPnts = robTrans*laserEndPnts;
 
 % TODO: compute laserEndPntsMapFrame from laserEndPnts. Use your world_to_map_coordinates implementation.
+% 转换成栅格地图下的世界坐标
 laserEndPntsMapFrame = world_to_map_coordinates(laserEndPnts(1:2,:),gridSize,offset);
 %laserEndPntsMapFrame(3,:) = laserEndPnts(3,:);
 %%%%%%%%%%%%
