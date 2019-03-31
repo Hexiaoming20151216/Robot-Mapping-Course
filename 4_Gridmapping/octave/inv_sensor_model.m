@@ -45,7 +45,7 @@ laserEndPnts = robotlaser_as_cartesian(scan, 30, false);
 laserEndPnts = robTrans*laserEndPnts;
 
 % TODO: compute laserEndPntsMapFrame from laserEndPnts. Use your world_to_map_coordinates implementation.
-% 转换成栅格地图下的世界坐标
+% 将激光束端点坐标转换成栅格地图下的世界坐标
 laserEndPntsMapFrame = world_to_map_coordinates(laserEndPnts(1:2,:),gridSize,offset);
 %laserEndPntsMapFrame(3,:) = laserEndPnts(3,:);
 %%%%%%%%%%%%
@@ -61,6 +61,8 @@ freeCells = [];
 % Example use for a line between points p1 and p2:
 % [X,Y] = bresenham(map,[p1_x, p1_y; p2_x, p2_y]);
 % You only need the X and Y outputs of this function.
+% columns返回二维数组的列数
+% 根据机器人位置和激光束端点坐标计算出freecell
 for sc=1:columns(laserEndPntsMapFrame)
 %%%	sc
         %TODO: compute the XY map coordinates of the free cells along the laser beam ending in laserEndPntsMapFrame(:,sc)	
@@ -69,8 +71,10 @@ for sc=1:columns(laserEndPntsMapFrame)
 	%robPoseMapFrame(2)
 	%%%%%%%%%%%%%%
 %	[~,~,map,X,Y] = bresenham(map,[robPoseMapFrame(1), robPoseMapFrame(2); laserEndPntsMapFrame(:,sc)'],0);
+  % 传入参数为机器人2D位置，激光束端点位置
 	[X,Y] = bresenham2([robPoseMapFrame(1), robPoseMapFrame(2); laserEndPntsMapFrame(1,sc), laserEndPntsMapFrame(2,sc)]);
         %TODO: add them to freeCells
+  % 所有的空freecell，2*N维
 	freeCells = [freeCells, [X;Y]];
 %	X
 %	Y
@@ -79,13 +83,17 @@ endfor
 
 
 %TODO: update the log odds values in mapUpdate for each free cell according to probFree.
+% 遍历freecells
 for i=1:size(freeCells,2)
+    % 取出x，y坐标
     tmpR = freeCells(1,i);
     tmpC = freeCells(2,i);
+    % 根据激光测量为free的概率计算出log odds
     mapUpdate(tmpR,tmpC) = prob_to_log_odds(probFree);
 endfor
 
 %TODO: update the log odds values in mapUpdate for each laser endpoint according to probOcc.
+% 更新占用 log odds
 for i=1:size(laserEndPnts,2)
     mapUpdate(laserEndPntsMapFrame(1,i),laserEndPntsMapFrame(2,i)) = prob_to_log_odds(probOcc);
 endfor

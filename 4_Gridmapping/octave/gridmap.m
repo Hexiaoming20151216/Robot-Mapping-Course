@@ -67,9 +67,10 @@ for(t=1:size(poses,1))
 	sc = laser(1,t);
 	% Compute the mapUpdate, which contains the log odds values to add to the map.
 	[mapUpdate, robPoseMapFrame, laserEndPntsMapFrame] = inv_sensor_model(map, sc, robPose, gridSize, offset, probOcc, probFree);
-
+  % 减去 l_0，即先验概率
 	mapUpdate -= logOddsPrior*ones(size(map));
 	% Update the occupancy values of the affected cells.
+  % 更新地图概率
 	map += mapUpdate;
 	
 	% Plot current map and robot trajectory so far.
